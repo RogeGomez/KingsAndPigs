@@ -33,9 +33,19 @@ MonoBehaviour:
     - goDatas_byGlobalId:
         keys:
         - globalObjectIdString: GlobalObjectId_V1-2-8be6094c8137a724c831aae3cc62b9b0-1975524114-0
+        - globalObjectIdString: GlobalObjectId_V1-2-8be6094c8137a724c831aae3cc62b9b0-13590760-0
+        - globalObjectIdString: GlobalObjectId_V1-2-8be6094c8137a724c831aae3cc62b9b0-519420028-0
         values:
         - colorIndex: 5
           iconNameOrGuid: AvatarMask On Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 9
+          iconNameOrGuid: GridView
+          isIconRecursive: 0
+          isColorRecursive: 1
+        - colorIndex: 0
+          iconNameOrGuid: Camera Icon
           isIconRecursive: 0
           isColorRecursive: 0
   bookmarks: []
