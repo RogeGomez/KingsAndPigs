@@ -99,7 +99,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// with kiss code stored in <see cref="NtpPacket.ReferenceId" />.
         /// </para>
         /// </value>
-        public int Stratum { get { return Bytes[1]; } }
+        public int Stratum
+        {
+            get { return Bytes[1]; }
+        }
 
         /// <summary>
         /// Gets server's preferred polling interval.
@@ -107,7 +110,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <value>
         /// Polling interval in log2 seconds, e.g. 4 stands for 16s and 17 means 131,072s.
         /// </value>
-        public int Poll { get { return Bytes[2]; } }
+        public int Poll
+        {
+            get { return Bytes[2]; }
+        }
 
         /// <summary>
         /// Gets the precision of server clock.
@@ -115,7 +121,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <value>
         /// Clock precision in log2 seconds, e.g. -20 for microsecond precision.
         /// </value>
-        public int Precision { get { return (sbyte)Bytes[3]; } }
+        public int Precision
+        {
+            get { return (sbyte)Bytes[3]; }
+        }
 
         /// <summary>
         /// Gets the total round-trip delay from the server to the reference clock.
@@ -123,7 +132,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <value>
         /// Round-trip delay to the reference clock. Normally a positive value smaller than one second.
         /// </value>
-        public TimeSpan RootDelay { get { return GetTimeSpan32(4); } }
+        public TimeSpan RootDelay
+        {
+            get { return GetTimeSpan32(4); }
+        }
 
         /// <summary>
         /// Gets the estimated error in time reported by the server.
@@ -131,7 +143,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <value>
         /// Estimated error in time reported by the server. Normally a positive value smaller than one second.
         /// </value>
-        public TimeSpan RootDispersion { get { return GetTimeSpan32(8); } }
+        public TimeSpan RootDispersion
+        {
+            get { return GetTimeSpan32(8); }
+        }
 
         /// <summary>
         /// Gets the ID of the time source used by the server or Kiss-o'-Death code sent by the server.
@@ -153,7 +168,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// this property contains so called kiss code that instructs the client to stop querying the server.
         /// </para>
         /// </value>
-        public uint ReferenceId { get { return GetUInt32BE(12); } }
+        public uint ReferenceId
+        {
+            get { return GetUInt32BE(12); }
+        }
 
         /// <summary>
         /// Gets or sets the time when the server clock was last set or corrected.
@@ -165,7 +183,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// This Property is usually set only by servers. It usually lags server's current time by several minutes,
         /// so don't use this property for time synchronization.
         /// </remarks>
-        public DateTime? ReferenceTimestamp { get { return GetDateTime64(16); } }
+        public DateTime? ReferenceTimestamp
+        {
+            get { return GetDateTime64(16); }
+        }
 
         /// <summary>
         /// Gets or sets the time when the client sent its request.
@@ -178,7 +199,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// </value>
         /// <seealso cref="NtpPacket.CorrectionOffset" />
         /// <seealso cref="NtpPacket.RoundTripTime" />
-        public DateTime? OriginTimestamp { get { return GetDateTime64(24); } }
+        public DateTime? OriginTimestamp
+        {
+            get { return GetDateTime64(24); }
+        }
 
         /// <summary>
         /// Gets or sets the time when the request was received by the server.
@@ -189,7 +213,10 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// </value>
         /// <seealso cref="NtpPacket.CorrectionOffset" />
         /// <seealso cref="NtpPacket.RoundTripTime" />
-        public DateTime? ReceiveTimestamp { get { return GetDateTime64(32); } }
+        public DateTime? ReceiveTimestamp
+        {
+            get { return GetDateTime64(32); }
+        }
 
         /// <summary>
         /// Gets or sets the time when the packet was sent.
@@ -203,7 +230,11 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// </remarks>
         /// <seealso cref="NtpPacket.CorrectionOffset" />
         /// <seealso cref="NtpPacket.RoundTripTime" />
-        public DateTime? TransmitTimestamp { get { return GetDateTime64(40); } private set { SetDateTime64(40, value); } }
+        public DateTime? TransmitTimestamp
+        {
+            get { return GetDateTime64(40); }
+            private set { SetDateTime64(40, value); }
+        }
 
         /// <summary>
         /// Gets or sets the time of reception of response SNTP packet on the client.
@@ -235,7 +266,8 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             get
             {
                 CheckTimestamps();
-                return (ReceiveTimestamp.Value - OriginTimestamp.Value) + (DestinationTimestamp.Value - TransmitTimestamp.Value);
+                return (ReceiveTimestamp.Value - OriginTimestamp.Value) +
+                       (DestinationTimestamp.Value - TransmitTimestamp.Value);
             }
         }
 
@@ -256,7 +288,8 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             get
             {
                 CheckTimestamps();
-                return TimeSpan.FromTicks(((ReceiveTimestamp.Value - OriginTimestamp.Value) - (DestinationTimestamp.Value - TransmitTimestamp.Value)).Ticks / 2);
+                return TimeSpan.FromTicks(((ReceiveTimestamp.Value - OriginTimestamp.Value) -
+                                           (DestinationTimestamp.Value - TransmitTimestamp.Value)).Ticks / 2);
             }
         }
 
@@ -313,7 +346,8 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             if (VersionNumber == 0)
                 throw new InvalidOperationException("Protocol version of the reply is not specified.");
             if (Stratum == 0)
-                throw new InvalidOperationException(string.Format("Received Kiss-o'-Death SNTP packet with code 0x{0:x}.", ReferenceId));
+                throw new InvalidOperationException(
+                    string.Format("Received Kiss-o'-Death SNTP packet with code 0x{0:x}.", ReferenceId));
             if (LeapIndicator == NtpLeapIndicator.AlarmCondition)
                 throw new InvalidOperationException("SNTP server has unsynchronized clock.");
             CheckTimestamps();
@@ -341,7 +375,8 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
 
         private void SetDateTime64(int offset, DateTime? value)
         {
-            SetUInt64BE(offset, value == null ? 0 : Convert.ToUInt64((value.Value.Ticks - Epoch.Ticks) * (0.0000001 * (1L << 32))));
+            SetUInt64BE(offset,
+                value == null ? 0 : Convert.ToUInt64((value.Value.Ticks - Epoch.Ticks) * (0.0000001 * (1L << 32))));
         }
 
         private TimeSpan GetTimeSpan32(int offset)

@@ -26,6 +26,7 @@ namespace FlyingWormConsole3.LiteNetLib
             {
                 OutgoingQueue.Enqueue(packet);
             }
+
             AddToPeerChannelSendQueue();
         }
 

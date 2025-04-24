@@ -19,15 +19,18 @@ namespace FlyingWormConsole3.LiteNetLib
 
     public class EventBasedNatPunchListener : INatPunchListener
     {
-        public delegate void OnNatIntroductionRequest(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, string token);
+        public delegate void OnNatIntroductionRequest(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint,
+            string token);
+
         public delegate void OnNatIntroductionSuccess(IPEndPoint targetEndPoint, NatAddressType type, string token);
 
         public event OnNatIntroductionRequest NatIntroductionRequest;
         public event OnNatIntroductionSuccess NatIntroductionSuccess;
 
-        void INatPunchListener.OnNatIntroductionRequest(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, string token)
+        void INatPunchListener.OnNatIntroductionRequest(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint,
+            string token)
         {
-            if(NatIntroductionRequest != null)
+            if (NatIntroductionRequest != null)
                 NatIntroductionRequest(localEndPoint, remoteEndPoint, token);
         }
 
@@ -149,11 +152,12 @@ namespace FlyingWormConsole3.LiteNetLib
                 {
                     var evt = _successEvents.Dequeue();
                     _natPunchListener.OnNatIntroductionSuccess(
-                        evt.TargetEndPoint, 
+                        evt.TargetEndPoint,
                         evt.Type,
                         evt.Token);
                 }
             }
+
             lock (_requestEvents)
             {
                 while (_requestEvents.Count > 0)
@@ -183,7 +187,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 {
                     Internal = NetUtils.MakeEndPoint(networkIp, _socket.LocalPort),
                     Token = additionalInfo
-                }, 
+                },
                 masterServerEndPoint);
         }
 
@@ -207,7 +211,7 @@ namespace FlyingWormConsole3.LiteNetLib
             NetDebug.Write(NetLogLevel.Trace, "[NAT] introduction received");
 
             // send internal punch
-            var punchPacket = new NatPunchPacket {Token = req.Token};
+            var punchPacket = new NatPunchPacket { Token = req.Token };
             Send(punchPacket, req.Internal);
             NetDebug.Write(NetLogLevel.Trace, "[NAT] internal punch sent to " + req.Internal);
 
@@ -236,7 +240,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 _successEvents.Enqueue(new SuccessEventData
                 {
                     TargetEndPoint = senderEndPoint,
-                    Type = req.IsExternal ? NatAddressType.External : NatAddressType.Internal, 
+                    Type = req.IsExternal ? NatAddressType.External : NatAddressType.Internal,
                     Token = req.Token
                 });
             }

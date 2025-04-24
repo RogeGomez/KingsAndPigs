@@ -29,9 +29,9 @@ namespace FlyingWormConsole3.LiteNetLib
 
         public static IPAddress ResolveAddress(string hostStr)
         {
-            if(hostStr == "localhost")
+            if (hostStr == "localhost")
                 return IPAddress.Loopback;
-            
+
             IPAddress ipAddress;
             if (!IPAddress.TryParse(hostStr, out ipAddress))
             {
@@ -40,6 +40,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 if (ipAddress == null)
                     ipAddress = ResolveAddress(hostStr, AddressFamily.InterNetwork);
             }
+
             if (ipAddress == null)
                 throw new ArgumentException("Invalid address: " + hostStr);
 
@@ -56,6 +57,7 @@ namespace FlyingWormConsole3.LiteNetLib
                     return ip;
                 }
             }
+
             return null;
         }
 
@@ -85,7 +87,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
                 {
                     //Skip loopback and disabled network interfaces
-                    if (ni.NetworkInterfaceType == NetworkInterfaceType.Loopback || 
+                    if (ni.NetworkInterfaceType == NetworkInterfaceType.Loopback ||
                         ni.OperationalStatus != OperationalStatus.Up)
                         continue;
 
@@ -115,21 +117,23 @@ namespace FlyingWormConsole3.LiteNetLib
                 IPAddress[] addresses = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
                 foreach (IPAddress ip in addresses)
                 {
-                    if((ipv4 && ip.AddressFamily == AddressFamily.InterNetwork) ||
-                       (ipv6 && ip.AddressFamily == AddressFamily.InterNetworkV6))
+                    if ((ipv4 && ip.AddressFamily == AddressFamily.InterNetwork) ||
+                        (ipv6 && ip.AddressFamily == AddressFamily.InterNetworkV6))
                         targetList.Add(ip.ToString());
                 }
             }
+
             if (targetList.Count == 0)
             {
-                if(ipv4)
+                if (ipv4)
                     targetList.Add("127.0.0.1");
-                if(ipv6)
+                if (ipv6)
                     targetList.Add("::1");
             }
         }
 
         private static readonly List<string> IpList = new List<string>();
+
         /// <summary>
         /// Get first detected local ip address
         /// </summary>
@@ -179,7 +183,8 @@ namespace FlyingWormConsole3.LiteNetLib
 
         internal static int RelativeSequenceNumber(int number, int expected)
         {
-            return (number - expected + NetConstants.MaxSequence + NetConstants.HalfMaxSequence) % NetConstants.MaxSequence - NetConstants.HalfMaxSequence;
+            return (number - expected + NetConstants.MaxSequence + NetConstants.HalfMaxSequence) %
+                NetConstants.MaxSequence - NetConstants.HalfMaxSequence;
         }
     }
 }

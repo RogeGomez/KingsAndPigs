@@ -160,6 +160,7 @@ namespace FlyingWormConsole3.LiteNetLib
                     _listener.OnMessageReceived(null, ex.SocketErrorCode, (IPEndPoint)bufferEndPoint);
                     break;
             }
+
             return false;
         }
 
@@ -183,7 +184,8 @@ namespace FlyingWormConsole3.LiteNetLib
                     var packet = _listener.NetPacketPool.GetPacket(NetConstants.MaxPacketSize);
                     packet.Size = socket.ReceiveFrom(packet.RawData, 0, NetConstants.MaxPacketSize, SocketFlags.None,
                         ref bufferEndPoint);
-                    NetDebug.Write(NetLogLevel.Trace, "[R]Received data from {0}, result: {1}", bufferEndPoint.ToString(), packet.Size);
+                    NetDebug.Write(NetLogLevel.Trace, "[R]Received data from {0}, result: {1}",
+                        bufferEndPoint.ToString(), packet.Size);
                     _listener.OnMessageReceived(packet, 0, (IPEndPoint)bufferEndPoint);
                     available -= packet.Size;
                 }
@@ -196,13 +198,16 @@ namespace FlyingWormConsole3.LiteNetLib
             {
                 return true;
             }
+
             return false;
         }
 
         private void ReceiveLogic(object state)
         {
             Socket socket = (Socket)state;
-            EndPoint bufferEndPoint = new IPEndPoint(socket.AddressFamily == AddressFamily.InterNetwork ? IPAddress.Any : IPAddress.IPv6Any, 0);
+            EndPoint bufferEndPoint =
+                new IPEndPoint(socket.AddressFamily == AddressFamily.InterNetwork ? IPAddress.Any : IPAddress.IPv6Any,
+                    0);
 
             while (IsActive())
             {
@@ -229,26 +234,29 @@ namespace FlyingWormConsole3.LiteNetLib
                 }
 
                 //All ok!
-                NetDebug.Write(NetLogLevel.Trace, "[R]Received data from {0}, result: {1}", bufferEndPoint.ToString(), packet.Size);
+                NetDebug.Write(NetLogLevel.Trace, "[R]Received data from {0}, result: {1}", bufferEndPoint.ToString(),
+                    packet.Size);
                 _listener.OnMessageReceived(packet, 0, (IPEndPoint)bufferEndPoint);
             }
         }
 
-        public bool Bind(IPAddress addressIPv4, IPAddress addressIPv6, int port, bool reuseAddress, IPv6Mode ipv6Mode, bool manualMode)
+        public bool Bind(IPAddress addressIPv4, IPAddress addressIPv6, int port, bool reuseAddress, IPv6Mode ipv6Mode,
+            bool manualMode)
         {
             if (IsActive())
                 return false;
             bool dualMode = ipv6Mode == IPv6Mode.DualMode && IPv6Support;
 
             _udpSocketv4 = new Socket(
-                dualMode ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork, 
-                SocketType.Dgram, 
+                dualMode ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork,
+                SocketType.Dgram,
                 ProtocolType.Udp);
 
-            if (!BindSocket(_udpSocketv4, new IPEndPoint(dualMode ? addressIPv6 : addressIPv4, port), reuseAddress, ipv6Mode))
+            if (!BindSocket(_udpSocketv4, new IPEndPoint(dualMode ? addressIPv6 : addressIPv4, port), reuseAddress,
+                    ipv6Mode))
                 return false;
 
-            LocalPort = ((IPEndPoint) _udpSocketv4.LocalEndPoint).Port;
+            LocalPort = ((IPEndPoint)_udpSocketv4.LocalEndPoint).Port;
 
 #if UNITY_IOS && !UNITY_EDITOR
             if (_unitySocketFix == null)
@@ -308,7 +316,6 @@ namespace FlyingWormConsole3.LiteNetLib
                     };
                     _threadv6.Start(_udpSocketv6);
                 }
-
             }
 
             return true;
@@ -323,16 +330,16 @@ namespace FlyingWormConsole3.LiteNetLib
             socket.SendBufferSize = NetConstants.SocketBufferSize;
 #if !UNITY || UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
 #if NETSTANDARD || NETCOREAPP
-            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 #endif
-            try
-            {
-                socket.IOControl(SioUdpConnreset, new byte[] { 0 }, null);
-            }
-            catch
-            {
-                //ignored
-            }
+                try
+                {
+                    socket.IOControl(SioUdpConnreset, new byte[] { 0 }, null);
+                }
+                catch
+                {
+                    //ignored
+                }
 #endif
 
             try
@@ -344,20 +351,27 @@ namespace FlyingWormConsole3.LiteNetLib
             {
                 //Unity with IL2CPP throws an exception here, it doesn't matter in most cases so just ignore it
             }
+
             if (socket.AddressFamily == AddressFamily.InterNetwork)
             {
                 Ttl = NetConstants.SocketTTL;
 
 #if NETSTANDARD || NETCOREAPP
-                if(!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 #endif
-                try { socket.DontFragment = true; }
-                catch (SocketException e)
-                {
-                    NetDebug.WriteError("[B]DontFragment error: {0}", e.SocketErrorCode);
-                }
+                    try
+                    {
+                        socket.DontFragment = true;
+                    }
+                    catch (SocketException e)
+                    {
+                        NetDebug.WriteError("[B]DontFragment error: {0}", e.SocketErrorCode);
+                    }
 
-                try { socket.EnableBroadcast = true; }
+                try
+                {
+                    socket.EnableBroadcast = true;
+                }
                 catch (SocketException e)
                 {
                     NetDebug.WriteError("[B]Broadcast error: {0}", e.SocketErrorCode);
@@ -372,7 +386,7 @@ namespace FlyingWormConsole3.LiteNetLib
                         //Disable IPv6 only mode
                         socket.SetSocketOption(SocketOptionLevel.IPv6, (SocketOptionName)27, false);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         NetDebug.WriteError("[B]Bind exception (dualmode setting): {0}", e.ToString());
                     }
@@ -383,7 +397,8 @@ namespace FlyingWormConsole3.LiteNetLib
             try
             {
                 socket.Bind(ep);
-                NetDebug.Write(NetLogLevel.Trace, "[B]Successfully binded to port: {0}", ((IPEndPoint)socket.LocalEndPoint).Port);
+                NetDebug.Write(NetLogLevel.Trace, "[B]Successfully binded to port: {0}",
+                    ((IPEndPoint)socket.LocalEndPoint).Port);
 
                 //join multicast
                 if (socket.AddressFamily == AddressFamily.InterNetworkV6)
@@ -420,25 +435,30 @@ namespace FlyingWormConsole3.LiteNetLib
 #if UNITY_2018_3_OR_NEWER
                             catch (SocketException ex)
                             {
-
                                 //because its fixed in 2018_3
-                                NetDebug.WriteError("[B]Bind exception: {0}, errorCode: {1}", ex.ToString(), ex.SocketErrorCode);
+                                NetDebug.WriteError("[B]Bind exception: {0}, errorCode: {1}", ex.ToString(),
+                                    ex.SocketErrorCode);
 #else
                             catch(SocketException)
                             {
 #endif
                                 return false;
                             }
+
                             return true;
                         }
+
                         break;
                     //hack for iOS (Unity3D)
                     case SocketError.AddressFamilyNotSupported:
                         return true;
                 }
-                NetDebug.WriteError("[B]Bind exception: {0}, errorCode: {1}", bindException.ToString(), bindException.SocketErrorCode);
+
+                NetDebug.WriteError("[B]Bind exception: {0}, errorCode: {1}", bindException.ToString(),
+                    bindException.SocketErrorCode);
                 return false;
             }
+
             return true;
         }
 
@@ -451,20 +471,20 @@ namespace FlyingWormConsole3.LiteNetLib
             try
             {
                 broadcastSuccess = _udpSocketv4.SendTo(
-                             data,
-                             offset,
-                             size,
-                             SocketFlags.None,
-                             new IPEndPoint(IPAddress.Broadcast, port)) > 0;
+                    data,
+                    offset,
+                    size,
+                    SocketFlags.None,
+                    new IPEndPoint(IPAddress.Broadcast, port)) > 0;
 
                 if (_udpSocketv6 != null)
                 {
                     multicastSuccess = _udpSocketv6.SendTo(
-                                                data,
-                                                offset,
-                                                size,
-                                                SocketFlags.None,
-                                                new IPEndPoint(MulticastAddressV6, port)) > 0;
+                        data,
+                        offset,
+                        size,
+                        SocketFlags.None,
+                        new IPEndPoint(MulticastAddressV6, port)) > 0;
                 }
             }
             catch (Exception ex)
@@ -472,6 +492,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 NetDebug.WriteError("[S][MCAST]" + ex);
                 return broadcastSuccess;
             }
+
             return broadcastSuccess || multicastSuccess;
         }
 
@@ -501,6 +522,7 @@ namespace FlyingWormConsole3.LiteNetLib
                         NetDebug.WriteError("[S]" + ex);
                         break;
                 }
+
                 errorCode = ex.SocketErrorCode;
                 return -1;
             }
@@ -521,6 +543,7 @@ namespace FlyingWormConsole3.LiteNetLib
                 _unitySocketFix = null;
 #endif
             }
+
             //cleanup dual mode
             if (_udpSocketv4 == _udpSocketv6)
                 _udpSocketv6 = null;

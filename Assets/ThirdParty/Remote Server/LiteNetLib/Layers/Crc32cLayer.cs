@@ -8,7 +8,6 @@ namespace FlyingWormConsole3.LiteNetLib.Layers
     {
         public Crc32cLayer() : base(CRC32C.ChecksumSize)
         {
-
         }
 
         public override void ProcessInboundPacket(IPEndPoint endPoint, ref byte[] data, ref int offset, ref int length)
@@ -29,6 +28,7 @@ namespace FlyingWormConsole3.LiteNetLib.Layers
                 length = 0;
                 return;
             }
+
             length -= CRC32C.ChecksumSize;
         }
 

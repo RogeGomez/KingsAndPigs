@@ -18,7 +18,7 @@ namespace FlyingWormConsole3.LiteNetLib
             _id = id;
             _reliable = reliable;
             if (_reliable)
-                _ackPacket = new NetPacket(PacketProperty.Ack, 0) {ChannelId = id};
+                _ackPacket = new NetPacket(PacketProperty.Ack, 0) { ChannelId = id };
         }
 
         protected override bool SendNextPackets()
@@ -82,11 +82,12 @@ namespace FlyingWormConsole3.LiteNetLib
                     _lastPacket = null;
                 return false;
             }
+
             int relative = NetUtils.RelativeSequenceNumber(packet.Sequence, _remoteSequence);
             bool packetProcessed = false;
             if (packet.Sequence < NetConstants.MaxSequence && relative > 0)
             {
-                if (Peer.NetManager.EnableStatistics) 
+                if (Peer.NetManager.EnableStatistics)
                 {
                     Peer.Statistics.AddPacketLoss(relative - 1);
                     Peer.NetManager.Statistics.AddPacketLoss(relative - 1);
@@ -94,8 +95,8 @@ namespace FlyingWormConsole3.LiteNetLib
 
                 _remoteSequence = packet.Sequence;
                 Peer.NetManager.CreateReceiveEvent(
-                    packet, 
-                    _reliable ? DeliveryMethod.ReliableSequenced : DeliveryMethod.Sequenced, 
+                    packet,
+                    _reliable ? DeliveryMethod.ReliableSequenced : DeliveryMethod.Sequenced,
                     NetConstants.ChanneledHeaderSize,
                     Peer);
                 packetProcessed = true;

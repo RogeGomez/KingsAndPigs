@@ -50,8 +50,8 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         {
             get { return _dataSize - _position; }
         }
-        
-        public void SkipBytes(int count) 
+
+        public void SkipBytes(int count)
         {
             _position += count;
         }
@@ -90,7 +90,6 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
 
         public NetDataReader()
         {
-
         }
 
         public NetDataReader(NetDataWriter writer)
@@ -114,6 +113,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         }
 
         #region GetMethods
+
         public IPEndPoint GetNetEndPoint()
         {
             string host = GetString(1000);
@@ -234,6 +234,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             {
                 arr[i] = GetString();
             }
+
             return arr;
         }
 
@@ -246,6 +247,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             {
                 arr[i] = GetString(maxStringLength);
             }
+
             return arr;
         }
 
@@ -322,7 +324,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         public string GetString(int maxLength)
         {
             int bytesCount = GetInt();
-            if (bytesCount <= 0 || bytesCount > maxLength*2)
+            if (bytesCount <= 0 || bytesCount > maxLength * 2)
             {
                 return string.Empty;
             }
@@ -384,7 +386,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             Buffer.BlockCopy(_data, _position, destination, 0, count);
             _position += count;
         }
-        
+
         public sbyte[] GetSBytesWithLength()
         {
             int length = GetInt();
@@ -393,7 +395,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             _position += length;
             return outgoingData;
         }
-        
+
         public byte[] GetBytesWithLength()
         {
             int length = GetInt();
@@ -402,6 +404,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             _position += length;
             return outgoingData;
         }
+
         #endregion
 
         #region PeekMethods
@@ -495,9 +498,11 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             string result = Encoding.UTF8.GetString(_data, _position + 4, bytesCount);
             return result;
         }
+
         #endregion
 
         #region TryGetMethods
+
         public bool TryGetByte(out byte result)
         {
             if (AvailableBytes >= 1)
@@ -505,6 +510,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetByte();
                 return true;
             }
+
             result = 0;
             return false;
         }
@@ -516,6 +522,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetSByte();
                 return true;
             }
+
             result = 0;
             return false;
         }
@@ -527,6 +534,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetBool();
                 return true;
             }
+
             result = false;
             return false;
         }
@@ -538,6 +546,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetChar();
                 return true;
             }
+
             result = '\0';
             return false;
         }
@@ -549,6 +558,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetShort();
                 return true;
             }
+
             result = 0;
             return false;
         }
@@ -560,6 +570,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetUShort();
                 return true;
             }
+
             result = 0;
             return false;
         }
@@ -571,6 +582,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetInt();
                 return true;
             }
+
             result = 0;
             return false;
         }
@@ -582,6 +594,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetUInt();
                 return true;
             }
+
             result = 0;
             return false;
         }
@@ -593,6 +606,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetLong();
                 return true;
             }
+
             result = 0;
             return false;
         }
@@ -604,6 +618,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetULong();
                 return true;
             }
+
             result = 0;
             return false;
         }
@@ -615,6 +630,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetFloat();
                 return true;
             }
+
             result = 0;
             return false;
         }
@@ -626,6 +642,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                 result = GetDouble();
                 return true;
             }
+
             result = 0;
             return false;
         }
@@ -641,6 +658,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                     return true;
                 }
             }
+
             result = null;
             return false;
         }
@@ -678,9 +696,11 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                     return true;
                 }
             }
+
             result = null;
             return false;
         }
+
         #endregion
 
         public void Clear()
@@ -691,4 +711,3 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         }
     }
 }
-

@@ -10,7 +10,6 @@ namespace FlyingWormConsole3.LiteNetLib.Layers
 
         public XorEncryptLayer() : base(0)
         {
-
         }
 
         public XorEncryptLayer(byte[] key) : this()

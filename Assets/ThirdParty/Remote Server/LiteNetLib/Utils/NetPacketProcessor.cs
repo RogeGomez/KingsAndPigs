@@ -19,11 +19,13 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
                     hash ^= typeName[i];
                     hash *= 1099511628211UL; //prime
                 }
+
                 Id = hash;
             }
         }
 
         protected delegate void SubscribeDelegate(NetDataReader reader, object userData);
+
         private readonly NetSerializer _netSerializer;
         private readonly Dictionary<ulong, SubscribeDelegate> _callbacks = new Dictionary<ulong, SubscribeDelegate>();
         private readonly NetDataWriter _netDataWriter = new NetDataWriter();
@@ -51,6 +53,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             {
                 throw new ParseException("Undefined packet in NetDataReader");
             }
+
             return action;
         }
 
@@ -140,7 +143,8 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             manager.SendToAll(_netDataWriter, options);
         }
 
-        public void SendNetSerializable<T>(NetManager manager, T packet, DeliveryMethod options) where T : INetSerializable
+        public void SendNetSerializable<T>(NetManager manager, T packet, DeliveryMethod options)
+            where T : INetSerializable
         {
             _netDataWriter.Reset();
             WriteNetSerializable(_netDataWriter, packet);
@@ -209,7 +213,8 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         /// <param name="onReceive">event that will be called when packet deserialized with ReadPacket method</param>
         /// <param name="packetConstructor">Method that constructs packet instead of slow Activator.CreateInstance</param>
         /// <exception cref="InvalidTypeException"><typeparamref name="T"/>'s fields are not supported, or it has no fields</exception>
-        public void Subscribe<T, TUserData>(Action<T, TUserData> onReceive, Func<T> packetConstructor) where T : class, new()
+        public void Subscribe<T, TUserData>(Action<T, TUserData> onReceive, Func<T> packetConstructor)
+            where T : class, new()
         {
             _netSerializer.Register<T>();
             _callbacks[GetHash<T>()] = (reader, userData) =>
@@ -255,7 +260,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
         }
 
         public void SubscribeNetSerializable<T, TUserData>(
-            Action<T, TUserData> onReceive, 
+            Action<T, TUserData> onReceive,
             Func<T> packetConstructor) where T : INetSerializable
         {
             _callbacks[GetHash<T>()] = (reader, userData) =>

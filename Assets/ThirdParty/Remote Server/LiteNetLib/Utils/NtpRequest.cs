@@ -30,6 +30,7 @@ namespace FlyingWormConsole3.LiteNetLib.Utils
             {
                 return false;
             }
+
             SocketError errorCode = 0;
             var packet = new NtpPacket();
             var sendCount = socket.SendTo(packet.Bytes, 0, packet.Bytes.Length, _ntpEndPoint, ref errorCode);

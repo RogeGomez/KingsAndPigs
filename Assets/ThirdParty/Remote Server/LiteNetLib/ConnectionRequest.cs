@@ -65,6 +65,7 @@ namespace FlyingWormConsole3.LiteNetLib
             {
                 NetDebug.WriteError("[AC] Invalid incoming data");
             }
+
             if (Result == ConnectionRequestResult.Accept)
                 return _listener.OnConnectionSolved(this, null, 0, 0);
 
@@ -84,7 +85,7 @@ namespace FlyingWormConsole3.LiteNetLib
             Result = ConnectionRequestResult.Accept;
             return _listener.OnConnectionSolved(this, null, 0, 0);
         }
-        
+
         public void Reject(byte[] rejectData, int start, int length, bool force)
         {
             if (!TryActivate())
