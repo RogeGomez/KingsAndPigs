@@ -15,14 +15,14 @@ MonoBehaviour:
   bookmarks:
   - _obj: {fileID: 0}
     globalId:
-      globalObjectIdString: GlobalObjectId_V1-2-8be6094c8137a724c831aae3cc62b9b0-1975524114-0
+      globalObjectIdString: GlobalObjectId_V1-2-8be6094c8137a724c831aae3cc62b9b0-13590760-0
     isSceneGameObject: 1
     isAsset: 0
     _typeString: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   - _obj: {fileID: 0}
     globalId:
-      globalObjectIdString: GlobalObjectId_V1-2-8be6094c8137a724c831aae3cc62b9b0-13590760-0
+      globalObjectIdString: GlobalObjectId_V1-2-8be6094c8137a724c831aae3cc62b9b0-1975524114-0
     isSceneGameObject: 1
     isAsset: 0
     _typeString: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
