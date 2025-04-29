@@ -18,6 +18,7 @@ MonoBehaviour:
     - e7518ce14068c5b478f35daf5d1df265
     - df6258688de235e4d9f4e70dae0a1bd9
     - 27ed9a9d203c63148ac9a0ec48bd3c2b
+    - 6e5e8513cc04f7847aaf7af0dbc7d3bf
     values:
     - iconNameOrGuid: ComputeShader Icon
       colorIndex: 6
@@ -35,4 +36,8 @@ MonoBehaviour:
       colorIndex: 2
       isIconRecursive: 0
       isColorRecursive: 1
+    - iconNameOrGuid: Material Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
   bookmarks: []
