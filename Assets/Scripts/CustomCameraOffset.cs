@@ -14,5 +14,6 @@ public class CustomCameraOffset : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Enter");
+        positionComposer.TargetOffset.y = -1.8f;
     }
 }
