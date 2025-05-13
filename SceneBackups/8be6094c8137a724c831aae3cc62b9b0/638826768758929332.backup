@@ -5096,16 +5096,16 @@ MonoBehaviour:
   speed: 5
   jumpForce: 4.8
   extraJumps: 1
-  counterExtraJumps: 1
+  counterExtraJumps: 0
   canDoubleJump: 0
-  lFoot: {fileID: 574489114}
-  rFoot: {fileID: 1332533589}
-  isGrounded: 1
+  lFoot: {fileID: 0}
+  rFoot: {fileID: 0}
+  isGrounded: 0
   rayLength: 0.1
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  checkWallDistance: 0.3
+  checkWallDistance: 0
   isWallDetected: 0
 --- !u!95 &1975524122
 Animator:
